@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Jumbotron, Container, Col, Form, Button, Card, CardColumns } from 'react-bootstrap';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/client';
 import { SAVE_BOOK } from '../utils/mutations';
 import Auth from '../utils/auth';
 import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
@@ -31,6 +31,7 @@ const SearchBooks = () => {
 
     try {
       const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${searchInput}`);
+
       if (!response.ok) {
         throw new Error('something went wrong!');
       }
@@ -121,14 +122,15 @@ const SearchBooks = () => {
                   <Card.Text>{book.description}</Card.Text>
                   {Auth.loggedIn() && (
                     <Button
-                      disabled={savedBookIds?.some((savedBookId) => savedBookId === book.bookId)}
+                      disabled={savedBookIds?.some((savedId) => savedId === book.bookId)}
                       className='btn-block btn-info'
                       onClick={() => handleSaveBook(book.bookId)}>
-                      {savedBookIds?.some((savedBookId) => savedBookId === book.bookId)
+                      {savedBookIds?.some((savedId) => savedId === book.bookId)
                         ? 'This book has already been saved!'
                         : 'Save this Book!'}
                     </Button>
                   )}
+                  {error && <span className='ml-2'>Something went wrong...</span>}
                 </Card.Body>
               </Card>
             );
