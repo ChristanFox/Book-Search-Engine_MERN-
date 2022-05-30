@@ -63,7 +63,7 @@ const SavedBooks = () => {
                   <Button className='btn-block btn-danger' onClick={() => handleDeleteBook(book.bookId)}>
                     Delete this Book!
                   </Button>
-                  {error && <span className='ml-2'>Something went wrong...</span>}
+                  {error && <span className='ml-2'>Oops, something isn't right...</span>}
                 </Card.Body>
               </Card>
             );
